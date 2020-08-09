@@ -4,8 +4,8 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.media.AudioAttributes
 import android.media.SoundPool
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_number.*
 
 class NumberActivity : AppCompatActivity() {

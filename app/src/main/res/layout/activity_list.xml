@@ -13,14 +13,6 @@
         android:background="#CCF9A825"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/clear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/random_start_button_background"
-            android:text="CLEAR" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -47,14 +39,13 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Name..."
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:selectAllOnFocus="true"/>
 
-            <ListView
-                android:id="@+id/listView"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </ListView>
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -63,6 +54,13 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView" />
 
             <Button
                 android:id="@+id/add"
@@ -79,13 +77,6 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/random_start_button_background"
                 android:text="START" />
-
-            <TextView
-                android:id="@+id/show"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
 
         </LinearLayout>
 
