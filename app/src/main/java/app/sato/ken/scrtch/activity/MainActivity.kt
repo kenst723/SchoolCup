@@ -3,11 +3,8 @@ package app.sato.ken.scrtch
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_list.*
+import app.sato.ken.scrtch.activity.ListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

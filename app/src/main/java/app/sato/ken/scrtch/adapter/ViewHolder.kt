@@ -1,9 +1,8 @@
-package app.sato.ken.recyclerview
+package app.sato.ken.scrtch.adapter
 
 import android.view.View
 import android.widget.TextView
 import app.sato.ken.scrtch.R
-import kotlinx.android.synthetic.main.simple_item.view.*
 
 class HomeViewHolder(itemView: View) :
     androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {

@@ -1,12 +1,15 @@
-package app.sato.ken.recyclerview
+package app.sato.ken.scrtch.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import app.sato.ken.scrtch.R
+import app.sato.ken.scrtch.model.ListName
+import io.realm.RealmResults
 
-class ViewAdapter(private val list: List<RowModel>, private val listener: ListListener) :
+
+class HistoryViewAdapter(private val list: RealmResults<ListName>, private val listener: ListListener) :
     androidx.recyclerview.widget.RecyclerView.Adapter<HomeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -16,9 +19,11 @@ class ViewAdapter(private val list: List<RowModel>, private val listener: ListLi
         return HomeViewHolder(rowView)
     }
 
+    val title: ListName? = null
+
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         Log.d("Life Cycle", "onBindViewHolder")
-        holder.titleView.text = list[position].title
+        holder.titleView.text = title?.name
         holder.itemView.setOnClickListener {
             listener.onClickRow(it, list[position])
         }
@@ -30,6 +35,6 @@ class ViewAdapter(private val list: List<RowModel>, private val listener: ListLi
     }
 
     interface ListListener {
-        fun onClickRow(tappedView: View, rowModel: RowModel)
+        fun onClickRow(tappedView: View, rowModel: ListName?)
     }
 }
