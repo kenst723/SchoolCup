@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import app.sato.ken.scrtch.activity.ListActivity
+import app.sato.ken.scrtch.activity.NumberActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         val kodomoFont: Typeface = Typeface.createFromAsset(assets, "KodomoRounded.otf")
         number.typeface = kodomoFont
         string.typeface = kodomoFont
+
+        //数字でスクラッチ（画面遷移
         number.setOnClickListener {
             val intent = Intent(
                 applicationContext,
@@ -25,6 +28,8 @@ class MainActivity : AppCompatActivity() {
             )
             startActivity(intent)
         }
+
+        //名前でスクラッチ（画面遷移
         string.setOnClickListener {
             val intent = Intent(
                 applicationContext,

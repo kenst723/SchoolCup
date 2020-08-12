@@ -6,5 +6,5 @@ import app.sato.ken.scrtch.R
 
 class HistoryViewHolder(itemView: View) :
     androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
-    val history_titleView: TextView = itemView.findViewById(R.id.history_simpleText)
+    val historyView: TextView = itemView.findViewById(R.id.historyText)
 }

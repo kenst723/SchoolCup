@@ -1,10 +1,10 @@
-package app.sato.ken.scrtch.database
+package app.sato.ken.scrtch
 
 import android.app.Application
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
-class RealmApplication: Application() {
+class RealmApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 

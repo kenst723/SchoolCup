@@ -1,29 +1,29 @@
 package app.sato.ken.scrtch.adapter
 
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import app.sato.ken.scrtch.R
-import app.sato.ken.scrtch.model.ListName
-import io.realm.RealmResults
+import app.sato.ken.scrtch.model.HistoryRowModel
 
+class HistoryViewAdapter(
+    private val list: List<HistoryRowModel>,
+    private val listener: ListListener
+) :
+    androidx.recyclerview.widget.RecyclerView.Adapter<HistoryViewHolder>() {
 
-class HistoryViewAdapter(private val list: RealmResults<ListName>, private val listener: ListListener) :
-    androidx.recyclerview.widget.RecyclerView.Adapter<HomeViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         Log.d("Life Cycle", "onCreateViewHolder")
         val rowView: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.simple_item, parent, false)
-        return HomeViewHolder(rowView)
+            LayoutInflater.from(parent.context).inflate(R.layout.history_simple_item, parent, false)
+        return HistoryViewHolder(rowView)
     }
 
-    val title: ListName? = null
-
-    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         Log.d("Life Cycle", "onBindViewHolder")
-        holder.titleView.text = title?.name
+        holder.historyView.text = list[position].historytitle
         holder.itemView.setOnClickListener {
             listener.onClickRow(it, list[position])
         }
@@ -35,6 +35,6 @@ class HistoryViewAdapter(private val list: RealmResults<ListName>, private val l
     }
 
     interface ListListener {
-        fun onClickRow(tappedView: View, rowModel: ListName?)
+        fun onClickRow(tappedView: View, rowModel: HistoryRowModel)
     }
 }

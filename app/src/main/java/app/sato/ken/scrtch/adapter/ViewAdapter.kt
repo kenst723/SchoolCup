@@ -4,10 +4,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import app.sato.ken.scrtch.model.RowModel
 import app.sato.ken.scrtch.R
+import app.sato.ken.scrtch.model.RowModel
 
-class ViewAdapter(private val list: List<RowModel>, private val listener: ListListener) :
+class ViewAdapter(private val list: MutableList<RowModel>, private val listener: ListListener) :
     androidx.recyclerview.widget.RecyclerView.Adapter<HomeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {

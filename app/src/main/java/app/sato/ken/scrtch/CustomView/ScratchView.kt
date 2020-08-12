@@ -1,4 +1,4 @@
-package app.sato.ken.scrtch
+package app.sato.ken.scrtch.CustomView
 
 import android.content.Context
 import android.graphics.*
@@ -43,7 +43,7 @@ class ScratchView : View, OnTouchListener {
         mWallCanvas = Canvas(mWallBitmap!!)
 
         // アルファで抜いていく画像を適当な透明度で初期化
-        mWallCanvas!!.drawColor(Color.argb(255, 255, 191, 127)) //ここで色を決める
+        mWallCanvas!!.drawColor(Color.argb(255, 189, 189, 189)) //ここで色を決める
         super.onSizeChanged(w, h, oldw, oldh)
     }
 

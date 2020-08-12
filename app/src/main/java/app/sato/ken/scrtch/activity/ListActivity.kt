@@ -1,9 +1,9 @@
 package app.sato.ken.scrtch.activity
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -13,22 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import app.sato.ken.scrtch.R
 import app.sato.ken.scrtch.adapter.HomeViewHolder
 import app.sato.ken.scrtch.adapter.ViewAdapter
-import app.sato.ken.scrtch.model.HistoryRowModel
-import app.sato.ken.scrtch.model.ListName
 import app.sato.ken.scrtch.model.RowModel
 import io.realm.Realm
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_list.*
 
 
 class ListActivity : AppCompatActivity() {
 
-    val historyItem = mutableListOf<HistoryRowModel>()
-
+    val realm: Realm = Realm.getDefaultInstance()
     var dataList = mutableListOf<RowModel>()
-    var realmList = mutableListOf<RowModel>()
-
-    var realm:Realm? = null
+    var resultList = mutableListOf<String>()
 
     companion object {
         const val randomList = "random"
@@ -39,15 +33,9 @@ class ListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_list)
         val dataList = mutableListOf<RowModel>()
 
-        Realm.init(this)
-        realm = Realm.getDefaultInstance()
+        //recyclerViewのIDを変数に入れる
+        val recyclerview = history_view
 
-        val recyclerview = recycler_view
-        val name: ListName? = read()
-
-        if (name != null){
-            content.setText(name.name)
-        }
 
         //フォント設定
         val kodomoFont: Typeface = Typeface.createFromAsset(assets, "KodomoRounded.otf")
@@ -56,42 +44,54 @@ class ListActivity : AppCompatActivity() {
         content.typeface = kodomoFont
 
         //recyclerViewのadapter定義
-        val adapter = ViewAdapter(dataList, object : ViewAdapter.ListListener{
+        val adapter = ViewAdapter(dataList, object : ViewAdapter.ListListener {
             override fun onClickRow(tappedView: View, rowModel: RowModel) {
-                Toast.makeText(applicationContext,rowModel.title,Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, rowModel.title, Toast.LENGTH_SHORT).show()
             }
         })
 
-
+        //スワイプ・ドラッグの設定
         val swipeToDismissTouchHelper = getSwipeToDismissTouchHelper(adapter)
         swipeToDismissTouchHelper.attachToRecyclerView(recyclerview)
-
-
         recyclerview.setHasFixedSize(true)
         recyclerview.layoutManager =
             androidx.recyclerview.widget.LinearLayoutManager(applicationContext)
 
-        // Realmからデータ取得
-        val listNameList: RealmResults<ListName> = realm!!.where(ListName::class.java).findAll()
-        listNameList.forEach {
-            Log.d("tag", it.name)
-        }
-
-
 
         //追加ボタンクリックの処理
         add.setOnClickListener {
-            val text = content.text.toString()
-            val data: RowModel = RowModel().also {
-                it.title = text
+            var num = ""
+
+            //入力されたテキストが空ではないとき
+            if (content.text.isNotEmpty()) {
+                //RecyclerViewにRowModel型のテキストを定義
+                val text = content.text.toString()
+                val data: RowModel = RowModel().also {
+                    it.title = text
+                    num = it.title
+                }
+
+                //配列にテキストをセット
+                dataList.add(data)
+                resultList.add(num) //ランダムに選ぶ用の配列(String型のmutableListOf)
+
+                //グローバル変数の配列に代入
+                this.dataList = dataList
+
+                //アダプターをセット
+                recyclerview.adapter = adapter
+            } else {
+                //入力されたテキストが空白の時
+                //Toastメッセージを送る
+                Toast.makeText(
+                    applicationContext,
+                    "文字を入力してください",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
             }
-            dataList.add(data)
-
-            this.dataList = dataList
-            realmList.add(data)
-            recyclerview.adapter = adapter
-
         }
+
         //テンキーを閉じる設定 or レイアウトを保存して表示
         content.setOnFocusChangeListener { view, _ ->
             val inputMethodManager =
@@ -102,9 +102,29 @@ class ListActivity : AppCompatActivity() {
             )
         }
 
+        //スタートボタンクリック時
         start.setOnClickListener {
 
-            save(realmList.toString())
+            //画面遷移
+            val intent = Intent(applicationContext, ListRandom::class.java)
+
+            //配列が空白ではないとき
+            if (dataList.isNotEmpty() or resultList.isNotEmpty()) {
+                //キーを受け渡し
+                intent.putExtra(randomList, resultList.random())
+                //アクティビティ（画面）を遷移
+                startActivity(intent)
+            } else {
+
+                //空白の時は遷移しないでToast
+                Toast.makeText(
+                    applicationContext,
+                    "テキストを入力してください",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+
         }
     }
 
@@ -115,47 +135,39 @@ class ListActivity : AppCompatActivity() {
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
             override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
+                recyclerView: RecyclerView,             //p0
+                viewHolder: RecyclerView.ViewHolder,    //p1
+                target: RecyclerView.ViewHolder         //p2
             ): Boolean {
                 val fromPosition = viewHolder.adapterPosition
                 val toPosition = target.adapterPosition
 
-                if(fromPosition < toPosition)
-                    adapter.notifyItemRangeChanged(fromPosition,toPosition-fromPosition+1)
-                else
-                    adapter.notifyItemRangeChanged(toPosition,fromPosition-toPosition+1)
+                /*
+                * ドラッグ時、viewType が異なるアイテムを超えるときに、
+                * notifyItemMoved を呼び出すと、ドラッグ操作がキャンセルされてしまう。
+                * （ドラッグは同じviewTypeを持つアイテム間で行う必要がある模様）
+                *
+                * 同じ ViewType アイテムを超える時だけ notifyItemMoved を呼び出す。
+                * */
+                if (viewHolder.itemViewType == target.itemViewType) {
+                    // Adapter の持つ実データセットを操作している
+                    dataList.add(toPosition, dataList.removeAt(fromPosition))
+                    // Adapter にアイテムが移動したことを通知
+                    adapter.notifyItemMoved(fromPosition, toPosition)
+                }
 
-                adapter.notifyItemMoved(fromPosition, toPosition)
-
-                return  true
+                return true
             }
 
+            //スワイプしたときに呼び出される処理
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                //データを削除
                 dataList.removeAt(viewHolder.adapterPosition)
+                resultList.removeAt(viewHolder.adapterPosition)
 
-                val fromPosition = viewHolder.adapterPosition
-
+                //アダプターに通知
                 adapter.notifyItemRemoved(viewHolder.adapterPosition)
-                dataList.removeAt(fromPosition)
-                adapter.notifyItemRemoved(fromPosition)
             }
         })
-
-    fun read(): ListName?{
-        return realm!!.where(ListName::class.java).findFirst()
-    }
-
-    fun save(name: String){
-        val name: ListName? = read()
-        realm?.executeTransaction {
-
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        realm?.close()
-    }
 }

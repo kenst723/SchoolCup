@@ -1,11 +1,13 @@
-package app.sato.ken.scrtch
+package app.sato.ken.scrtch.activity
 
 import android.content.Intent
 import android.graphics.Typeface
-import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import app.sato.ken.scrtch.NumberSelectActivity
+import app.sato.ken.scrtch.R
 import kotlinx.android.synthetic.main.activity_number.*
 
 class NumberActivity : AppCompatActivity() {
@@ -21,34 +23,33 @@ class NumberActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_number)
 
-        val audioAttributes = AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_GAME)
-            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-            .build()
-
-        soundPool = SoundPool.Builder()
-            .setAudioAttributes(audioAttributes)
-            .setMaxStreams(2)
-            .build()
-
-        soundOne = soundPool.load(this, R.raw.win, 1)
-
         add.setOnClickListener {
 
+            //入力された数字を受け取り
             val subF = first.text.toString()
             val subS = second.text.toString()
 
-            val intent = Intent(applicationContext, NumberSelectActivity::class.java)
+            //空白の時は処理をしない
+            if (subF == "") {
+                Toast.makeText(applicationContext, "数字を入力してください", Toast.LENGTH_SHORT).show()
+            } else if (subS == "") {
+                Toast.makeText(applicationContext, "数字を入力してください", Toast.LENGTH_SHORT).show()
 
-            intent.putExtra(keyF, subF)
-            intent.putExtra(keyS, subS)
+                //それ以外の時は処理をする
+            } else {
+                val intent = Intent(applicationContext, NumberSelectActivity::class.java)
 
-            soundPool.play(soundOne, 1.0f, 1.0f, 0, 0, 1.0f)
+                //値受け渡しの定義
+                intent.putExtra(keyF, subF)
+                intent.putExtra(keyS, subS)
 
-            startActivity(intent)
+                //アクティビティスタート（画面遷移
+                startActivity(intent)
+            }
         }
 
-        val shirokuma: Typeface = Typeface.createFromAsset(assets, "shirokuma-Regular.otf")
+        //フォント
+        Typeface.createFromAsset(assets, "shirokuma-Regular.otf")
         val kodomoFont: Typeface = Typeface.createFromAsset(assets, "KodomoRounded.otf")
         first.typeface = kodomoFont
         second.typeface = kodomoFont
