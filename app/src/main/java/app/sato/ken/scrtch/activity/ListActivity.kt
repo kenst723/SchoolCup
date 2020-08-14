@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -14,6 +15,10 @@ import app.sato.ken.scrtch.R
 import app.sato.ken.scrtch.adapter.HomeViewHolder
 import app.sato.ken.scrtch.adapter.ViewAdapter
 import app.sato.ken.scrtch.model.RowModel
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_list.*
 
@@ -32,6 +37,44 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
         val dataList = mutableListOf<RowModel>()
+
+        // Test App ID
+        MobileAds.initialize(
+            this,
+            "ca-app-pub-6113397183068417~1624824354"
+        )
+
+        val adView = findViewById<AdView>(R.id.adView2)
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+
+        adView.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                Log.d("debug", "Code to be executed when an ad finishes loading.")
+            }
+
+            override fun onAdFailedToLoad(errorCode: Int) {
+                Log.d("debug", "Code to be executed when an ad request fails.")
+            }
+
+            override fun onAdOpened() {
+                Log.d(
+                    "debug",
+                    "Code to be executed when an ad opens an overlay that covers the screen."
+                )
+            }
+
+            override fun onAdLeftApplication() {
+                Log.d("debug", "Code to be executed when the user has left the app.")
+            }
+
+            override fun onAdClosed() {
+                Log.d(
+                    "debug",
+                    "Code to be executed when when the user is about to return to the app after tapping on an ad."
+                )
+            }
+        }
 
         //recyclerViewのIDを変数に入れる
         val recyclerview = history_view
@@ -119,7 +162,7 @@ class ListActivity : AppCompatActivity() {
                 //空白の時は遷移しないでToast
                 Toast.makeText(
                     applicationContext,
-                    "テキストを入力してください",
+                    "文字を入力してください",
                     Toast.LENGTH_SHORT
                 )
                     .show()

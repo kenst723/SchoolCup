@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import app.sato.ken.scrtch.R
 import app.sato.ken.scrtch.model.RowModel
 
+
 class ViewAdapter(private val list: MutableList<RowModel>, private val listener: ListListener) :
     androidx.recyclerview.widget.RecyclerView.Adapter<HomeViewHolder>() {
 
