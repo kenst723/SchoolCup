@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,12 +20,11 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#CDDC39"
-                app:srcCompat="@drawable/present_illsut" />
-
+                ads:srcCompat="@drawable/prsenticon" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,35 +51,44 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <Button
-                android:id="@+id/add"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/random_start_button_background"
-                android:text="ADD"
-                android:textColor="#757575"
-                android:textSize="24sp" />
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/start"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/random_start_button_background"
-                android:text="START"
-                android:textColor="#757575"
-                android:textSize="24sp" />
+                <Button
+                    android:id="@+id/start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/random_start_button_background"
+                    android:text="START"
+                    android:textColor="#757575"
+                    android:textSize="24sp" />
 
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-6113397183068417/1952127410" />
+                <Button
+                    android:id="@+id/add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/random_start_button_background"
+                    android:text="ADD"
+                    android:textColor="#757575"
+                    android:textSize="24sp" />
+            </LinearLayout>
 
         </LinearLayout>
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-6113397183068417/1952127410" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
