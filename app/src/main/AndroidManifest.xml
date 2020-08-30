@@ -3,23 +3,22 @@
     package="app.sato.ken.scrtch">
 
     <application
-        android:name=".RealmApplication"
+        android:name=".database.RealmApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.HistoryActivity" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6113397183068417~1624824354" />
 
-        <activity android:name=".firstAction.OpeningSecond"></activity>
+        <activity android:name=".firstAction.OpeningSecond" />
         <activity android:name=".firstAction.OpeningFirst" />
-        <activity android:name=".activity.PagerActivity" />
         <activity android:name=".firstAction.use_activity" />
-        <activity android:name=".FirstActivity" />
-        <activity android:name=".activity.HistoryActivity" />
         <activity android:name=".activity.ListRandom" />
         <activity
             android:name=".activity.ListActivity"

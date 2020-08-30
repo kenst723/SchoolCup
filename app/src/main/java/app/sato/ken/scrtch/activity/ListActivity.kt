@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_list.*
 
 class ListActivity : AppCompatActivity() {
 
+    val text = ""
     val realm: Realm = Realm.getDefaultInstance()
     var dataList = mutableListOf<RowModel>()
     var resultList = mutableListOf<String>()
@@ -188,7 +189,6 @@ class ListActivity : AppCompatActivity() {
                 /*
                 * ドラッグ時、viewType が異なるアイテムを超えるときに、
                 * notifyItemMoved を呼び出すと、ドラッグ操作がキャンセルされてしまう。
-                * （ドラッグは同じviewTypeを持つアイテム間で行う必要がある模様）
                 *
                 * 同じ ViewType アイテムを超える時だけ notifyItemMoved を呼び出す。
                 * */
